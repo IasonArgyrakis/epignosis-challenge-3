@@ -25,6 +25,7 @@ Route::get('/test', [\App\Http\Controllers\Auth\ApiAuthController::class,"test"]
 
 Route::middleware('auth:api')->group(function () {
     // our routes to be protected will go in here
-    Route::post('/holidays', [\App\Http\Controllers\ApplicationController::class,"store"]);
-    Route::put('/application/{applicationid}', [\App\Http\Controllers\ApplicationController::class,"update"]);
+    Route::post('/my-applications/new', [\App\Http\Controllers\ApplicationController::class,"store"]);
+    Route::put('/application/{applicationid}', [\App\Http\Controllers\ApplicationController::class,"update"])->middleware("adminOnly");
+    Route::get('/my-applications/', [\App\Http\Controllers\ApplicationController::class,"show"]);
 });

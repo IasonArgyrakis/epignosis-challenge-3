@@ -41,11 +41,7 @@ class ApplicationController extends Controller
 
     public function update(Request $request,int $applicationid){
 
-        if($request->user()->isAdmin() == false ){
-            $response = ["message" => 'Only admins can do that'];
-            return response($response, 403);
 
-        }
         $validator = Validator::make($request->all()
             ,
             [
@@ -60,7 +56,8 @@ class ApplicationController extends Controller
 
        $application=Application::find($applicationid);
         if($application==null){
-            return "Not found";
+            $response = ["message" => 'no such application'];
+            return response($response, 404);
         }
 
         $application->status= $request['status'];
@@ -70,6 +67,16 @@ class ApplicationController extends Controller
 
 
 
+
+    }
+    public function show(Request $request) {
+
+        $applications =  Application::where("user_id",$request->user()->id)->orderByDesc('created_at')->get();
+        if($applications==null){
+            $response = ["message" => 'no  applications for user '];
+            return response($response, 404);
+        }
+        return $applications;
 
     }
 
