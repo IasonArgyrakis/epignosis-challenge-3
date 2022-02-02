@@ -45,8 +45,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
      function isAdmin(){
-         if($this->type===self::USER_TYPE[0]) return true;
-         else return false;
+         if($this->type==self::USER_TYPE[0])
+         { return true; }
+         else { return false;}
 
     }
 
