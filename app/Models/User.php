@@ -44,4 +44,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+     function isAdmin(){
+         if($this->type===self::USER_TYPE[0]) return true;
+         else return false;
+
+    }
+
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
+
+
 }

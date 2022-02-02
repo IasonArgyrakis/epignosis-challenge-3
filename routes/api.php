@@ -25,5 +25,5 @@ Route::get('/test', [\App\Http\Controllers\Auth\ApiAuthController::class,"test"]
 
 Route::middleware('auth:api')->group(function () {
     // our routes to be protected will go in here
-    Route::get('/test-safe', [\App\Http\Controllers\Auth\ApiAuthController::class,"test"]);
+    Route::post('/holidays', [\App\Http\Controllers\ApplicationController::class,"store"]);
 });

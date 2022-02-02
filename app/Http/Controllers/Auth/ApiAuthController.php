@@ -15,6 +15,7 @@ class ApiAuthController extends Controller
 
     public function test(Request $request)
     {
+        dd($request->user()->isAdmin());
         return "this is secret";
     }
 
