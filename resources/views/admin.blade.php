@@ -77,7 +77,7 @@
                                                     <div style="font-size: 14px; mso-line-height-alt: 16.8px; color: #555555; line-height: 1.2; font-family: Arial, Helvetica Neue, Helvetica, sans-serif;">
                                                         <p style="margin: 0; font-size: 14px; text-align: center;">Dear supervisor,</p>
                                                         <p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 16.8px;"> </p>
-                                                        <p style="margin: 0; font-size: 14px; text-align: center;">Employee <strong>{{$application->lastName}}</strong> <strong>{{$application->firstName}}</strong></p>
+                                                        <p style="margin: 0; font-size: 14px; text-align: center;">Employee <strong>{{$application->applicant}}</strong></p>
                                                         <p style="margin: 0; font-size: 14px; text-align: center;">requested for some time off</p>
                                                         <p style="margin: 0; font-size: 14px; text-align: center; mso-line-height-alt: 16.8px;"> </p>
                                                         <p style="margin: 0; font-size: 14px; text-align: center;">starting on <strong>{{$application->start}}</strong></p>

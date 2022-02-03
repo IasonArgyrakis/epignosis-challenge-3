@@ -35,7 +35,12 @@ class ApplicationController extends Controller
         $user=$request->user();
 
         $application=$user->applications()->create($application);
+
         $admins=User::where("type","admin")->get();
+
+        $applicant= User::findOrFail($application->user_id);
+        $application["applicant"] = $applicant->lastName." ".$applicant->firstName;
+
 
         Mail::to($admins)->send(new NotifyAdmin($application));
         return $application;
