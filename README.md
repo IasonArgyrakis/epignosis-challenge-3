@@ -1,66 +1,90 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Epignosis Challenge
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+PHP developer assignment
 
-## About Laravel
+Purpose-Disclaimer The objective of this assignment is to gauge your technical skills, as well as to give us some
+talking points for your technical interview. Note that the scope of the assignment is purely fictional. It is in no
+capacity related to any part of our products and/or business nor will it ever be used commercially or otherwise in any
+form.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Assignment overview You work for a company that has tripled in size over the past few years and the way the
+vacation process works is no longer efficient, as it requires a combination of hand written applications, approvals,
+storage and maintenance. You are asked to create a portal where employees can request their vacation online, the manager
+receives a notification to approve or decline that request, and the information (time used, balances) are stored within
+the portal.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+# Detailed description Application process - workflow
+![Application process - workflow](./flow.png "Application process - workflow")
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+##Application process - summary
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. The employee signs into the portal
 
-## Laravel Sponsors
+2. A list of past applications is displayed, sorted by submission date (descending) including the following fields
+    1. Date submitted
+    2. Dates requested (vacation start - vacation end)
+    3. Days requested
+    4. Status (pending/approved/rejected)
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+3. A button “submit request” appears above the list. The employee clicks on the button to visit the submission form The submission form includes the following fields:
+    1. Date from (vacation start)
+    2. Date to (vacation end)
+    3. Reason (textarea)
+    4. Submit button
+4. After the employee fills-in the fields and clicks on “submit”, he/she is taken back to the list of applications
+5. Upon submitting the application, an email is sent to the employee’s administrator. The email includes the following
+   body:
+   ```
+   Dear supervisor,
+   Employee {user} requested for some time off,
+   starting on {vacation_start} and ending on {vacation_end},
+   stating the reason:  {reason}
+   Click on one of the below links to approve or reject the application:
+   {approve_link} - {reject_link}
+   ```
+6. The administrator (who acts as a supervisor as well) clicks on one of the “approve” or “reject” links to mark the
+   application accordingly
+7. As soon as the administrator makes a selection, another email goes out to the user notifying him/her of the
+   application outcome, with the following body:
+```
+Dear employee, your supervisor has {accepted/rejected} your application submitted on {submission_date}.
+```
 
-### Premium Partners
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
-- **[Romega Software](https://romegasoftware.com)**
+##User provisioning process
+The portal includes an administration page where the designated administrator can create and
+edit users. The process can be summarized as follows:
 
-## Contributing
+1. The administrator signs in with his/her credentials:
+2.  He/she views a list of his/her users, with the following fields:
+    1. User first name
+    2. User last name
+    3. User email
+    4. User type (employee/admin)
+3. On top of the page there is a button to create a user. Clicking on it takes the admin to the user creation page,
+   which includes a form with the following fields:
+    1. First name
+    2. Last name
+    3. Email
+    4. Password
+    5. Confirm password
+    6. User type (drop down, admin/employee)
+    7. Create button
+4. In the list of users, each entry is clickable.
+    1. Clicking on it takes the admin to the user properties page
+    2. which includes the same form as the “creation” page, only this time all fields are pre-populated with the user’s entries (
+       except for the password and the confirm password fields) and the create button is now an update button.
+    3. The administrator can change the user’s properties by clicking on the update button. User login process When an employee
+       visits the portal’s homepage, a “login” form displays, prompting him/her to enter his/her email and password, to sign
+       in.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Technical specifications
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+1. The portal must be created using PHP 7+.
+2. The portal must be based on MySQL or MariaDB for the data storage. 3. You must use the Laravel framework for the
+   backend. You are allowed to use any frontend framework. Deliverables
+1. Source code for the application.
+2. Documentation.
+3. A dump of the database needed to run the app. 6

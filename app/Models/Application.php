@@ -9,6 +9,7 @@ class Application extends Model
 {
     use HasFactory;
     const STATUS = ["pending","approved","rejected"];
+    const OUTCOMES = ["rejected","approved"];
     protected $fillable = [
         "start",
         "end",
@@ -16,7 +17,7 @@ class Application extends Model
         "reason",
     ];
 
-    public function applicant()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }

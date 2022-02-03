@@ -21,7 +21,7 @@ class CreateApplicationsTable extends Migration
             $table->date("end");
             $table->enum("status",["pending","approved","rejected"]);
             $table->string("reason");
-            $table->foreignId("user_id");
+            $table->foreignId("user_id")->constrained();
             $table->foreignId("approver_id")->nullable();
         });
     }
