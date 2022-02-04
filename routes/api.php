@@ -34,5 +34,9 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/all-applications/', [\App\Http\Controllers\ApplicationController::class,"showall"]);
 
     Route::get('/users', [\App\Http\Controllers\UsersController::class,"index"])->middleware("adminOnly");
+    Route::get('/user/{user_id}', [\App\Http\Controllers\UsersController::class,"show"])->middleware("adminOnly");
+    Route::put('/user/{user_id}', [\App\Http\Controllers\UsersController::class,"update"])->middleware("adminOnly");
+
+
 
 });
