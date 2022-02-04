@@ -8,13 +8,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class NotifyAdmin extends Mailable
+class NotifyUser extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * @var Application
-     */
     public $application;
 
     /**
@@ -22,7 +19,7 @@ class NotifyAdmin extends Mailable
      *
      * @return void
      */
-    public function __construct(Application $application)
+    public function __construct(Application  $application)
     {
         $this->application =$application;
     }
@@ -35,9 +32,9 @@ class NotifyAdmin extends Mailable
     public function build()
     {
 
-        return $this->from('system@example.com','Domain.com')
-            ->subject( 'New Leave Request from '.$this->application->applicant."(".$this->application->start.'-'.$this->application->end.")")
-            ->view('admin');
+        return $this->from('system@example.com','Domain.com' )
+            ->subject('Your Request was '.$this->application->status." (".$this->application->start.'-'.$this->application->end.")")
+            ->view('user');
 
     }
 }

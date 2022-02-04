@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\NotifyAdmin;
+use App\Mail\NotifyUser;
 use App\Models\Application;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -57,6 +58,8 @@ class ApplicationController extends Controller
 
         $application->status=Application::OUTCOMES[$outcome];
         $application->save();
+
+        Mail::to($application->user->email)->send(new NotifyUser($application));
         return "<h3>Application { $application->status;} </h3>";
 
 
@@ -86,6 +89,7 @@ class ApplicationController extends Controller
         $application->status= $request['status'];
         $application->approver_id= $request->user()->id;
         $application->save();
+        Mail::to($application->user->email)->send(new NotifyUser($application));
         return $application;
 
 

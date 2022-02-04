@@ -1,6 +1,16 @@
 # For more information: https://laravel.com/docs/sail
 version: '3'
 services:
+    react:
+        build:
+            context: ./react/Docker
+            dockerfile: Dockerfile
+        ports:
+            -   "3000:3000"
+        volumes:
+            - ./react/leave-apply:/usr/src/app/leave-apply
+
+
     laravel.test:
         build:
             context: ./vendor/laravel/sail/runtimes/8.1
