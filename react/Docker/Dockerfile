@@ -1,8 +1,9 @@
-FROM node:10
+FROM node:12
 
 WORKDIR /usr/src/app/leave-apply
 
-COPY ./ ./
+
+COPY . .
 
 RUN npm install
 

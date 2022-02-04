@@ -8,7 +8,7 @@ services:
         ports:
             -   "3000:3000"
         volumes:
-            - ./react/leave-apply:/usr/src/app/leave-apply
+            - './react/leave-apply:/usr/src/app/leave-apply'
 
 
     laravel.test:
