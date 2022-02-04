@@ -2,7 +2,7 @@ FROM node:10
 
 WORKDIR /usr/src/app/leave-apply
 
-COPY package*.json ./
+COPY ./ ./
 
 RUN npm install
 
