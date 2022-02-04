@@ -29,22 +29,40 @@ class ApplicationController extends Controller
             'status'=>Application::STATUS[0],
             'start' => $request['start'],
             'end' => $request['end'],
-            'reason' => $request['reason']
+            'reason' => $request['reason'],
             ];
 
 
+        /** @var User $user */
         $user=$request->user();
 
-        $application=$user->applications()->create($application);
-
-        $admins=User::where("type","admin")->get();
-
-        $applicant= User::findOrFail($application->user_id);
-        $application["applicant"] = $applicant->lastName." ".$applicant->firstName;
 
 
-        Mail::to($admins)->send(new NotifyAdmin($application));
-        return $application;
+        $days_requested=Application::calculate_days($application["start"],$application["end"]);
+        $outcome=$user->hasEnoughDaysLeft($days_requested);
+
+
+        /** @var User $user */
+        if( $outcome){
+
+            $application=$user->applications()->create($application);
+
+
+            $admins=User::where("type","admin")->get();
+
+            $applicant= User::findOrFail($application->user_id);
+            $application["applicant"] = $applicant->lastName." ".$applicant->firstName;
+
+
+            Mail::to($admins)->send(new NotifyAdmin($application));
+            return $application;
+
+        }
+        else {
+            return response(['errors' => "Not enough days left","days_requested"=>$days_requested,"days_left"=>$user->daysLeft()], 200);
+        }
+
+
 
 
 
@@ -58,6 +76,12 @@ class ApplicationController extends Controller
 
         $application->status=Application::OUTCOMES[$outcome];
         $application->save();
+
+        if($application->status==Application::OUTCOMES[1]){
+            $days_requested=Application::calculate_days($application["start"],$application["end"]);
+            $application->user->increaseDaysTaken($days_requested);
+            $application->user->save();
+        }
 
         Mail::to($application->user->email)->send(new NotifyUser($application));
         return "<h3>Application { $application->status;} </h3>";
@@ -80,15 +104,24 @@ class ApplicationController extends Controller
 
 
 
+
        $application=Application::find($applicationid);
         if($application==null){
             $response = ["message" => 'no such application'];
             return response($response, 404);
         }
 
+
+
         $application->status= $request['status'];
         $application->approver_id= $request->user()->id;
         $application->save();
+
+        if($request['status']==Application::OUTCOMES[1]){
+            $days_requested=Application::calculate_days($application["start"],$application["end"]);
+            $application->user->increaseDaysTaken($days_requested);
+            $application->user->save();
+        }
         Mail::to($application->user->email)->send(new NotifyUser($application));
         return $application;
 

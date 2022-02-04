@@ -37,6 +37,7 @@ class UsersController extends Controller
         $user->lastname = $request['lastName'];
         $user->email = $request['email'];
         $user->type = User::USER_TYPES[$request['type']];
+        $user->total_days = 24;
         $user->save();
         return $user;
 
