@@ -26,6 +26,8 @@ class UsersController extends Controller
                 'firstName' => 'required|string|max:255',
                 'lastName' => 'required|string|max:255',
                 'email' => 'required|email|max:255',
+                'total_days' => 'required|integer',
+                'total_days_taken' => 'required|integer',
             ]
         );
         if ($validator->fails()) {
@@ -37,7 +39,8 @@ class UsersController extends Controller
         $user->lastname = $request['lastName'];
         $user->email = $request['email'];
         $user->type = User::USER_TYPES[$request['type']];
-        $user->total_days = 24;
+        $user->total_days = $request['total_days'];
+        $user->total_days_taken = $request['total_days_taken'];;
         $user->save();
         return $user;
 
