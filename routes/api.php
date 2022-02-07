@@ -23,7 +23,7 @@ Route::post('/register', [\App\Http\Controllers\Auth\ApiAuthController::class,"r
 Route::post('/logout', [\App\Http\Controllers\Auth\ApiAuthController::class,"logout"]);
 Route::get('/test', [\App\Http\Controllers\Auth\ApiAuthController::class,"test"]);
 
-Route::get('/email/{applicationid}/{outcome}', [\App\Http\Controllers\ApplicationController::class,"email_link"]);
+Route::get('/email/{applicationid}/{outcome}/{approverId}', [\App\Http\Controllers\ApplicationController::class,"email_link"]);
 
 
 Route::middleware('auth:api')->group(function () {

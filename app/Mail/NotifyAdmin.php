@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Application;
+use http\Client\Curl\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -16,15 +17,17 @@ class NotifyAdmin extends Mailable
      * @var Application
      */
     public $application;
+    public $adminId;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Application $application)
+    public function __construct(Application $application, $adminId)
     {
-        $this->application =$application;
+        $this->application = $application;
+        $this->adminId = $adminId;
     }
 
     /**

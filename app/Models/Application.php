@@ -27,18 +27,6 @@ class Application extends Model
         return $this->belongsTo(User::class);
     }
 
-//    static function calculate_dayss($date_1 , $date_2 , $differenceFormat = '%a' ): int
-//    {
-//        $datetime1 = date_create($date_1);
-//        $datetime2 = date_create($date_2);
-//
-//
-//
-//        $interval = date_diff($datetime1, $datetime2);
-//
-//        return (int)$interval->format($differenceFormat);
-//
-//    }
 
     static function calculate_days($startDate, $endDate)
     {
