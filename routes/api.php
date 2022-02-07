@@ -36,6 +36,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/users', [\App\Http\Controllers\UsersController::class,"index"])->middleware("adminOnly");
     Route::get('/user/{user_id}', [\App\Http\Controllers\UsersController::class,"show"])->middleware("adminOnly");
     Route::put('/user/{user_id}', [\App\Http\Controllers\UsersController::class,"update"])->middleware("adminOnly");
+    //to secure register uncomment
+    //Route::post('/register', [\App\Http\Controllers\Auth\ApiAuthController::class,"register"]);
 
 
 
