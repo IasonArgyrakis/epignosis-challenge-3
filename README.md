@@ -1,12 +1,14 @@
-How to start the app 
+#How to start the app
 
+ You need php , composer , docker installed 
 
 
 `
-vendor/bin/sail up
+vendor/bin/sail up --build 
 `
+--build runs npm install and get all the required packages
 
-this should (hopefully😅) start the laravel env with a React frontend that I added to the docker-compose file
+this should (hopefully😅) start the laravel sail env with a React frontend that I added to the docker-compose file
 
 
 
