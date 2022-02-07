@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Validator;
 class ApplicationController extends Controller
 {
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Database\Eloquent\Model|\Illuminate\Http\Response
+     */
     public function store(Request $request){
         $validator = Validator::make($request->all()
             ,
@@ -26,7 +30,7 @@ class ApplicationController extends Controller
             return response(['errors' => $validator->errors()->all()], 422);
         }
         $application=[
-            'status'=>Application::STATUS[0],
+            'status'=>Application::STATUS["pending"],
             'start' => $request['start'],
             'end' => $request['end'],
             'reason' => $request['reason'],
@@ -68,28 +72,40 @@ class ApplicationController extends Controller
 
 
     }
-    public function email_link(int $applicationid,int $outcome){
+
+    /**
+     * @param int $applicationid
+     * @param int $outcome
+     * @return string
+     */
+    public function email_link(int $applicationid, string $outcome){
         $application=Application::where(["id"=>$applicationid,"status"=>"pending"])->first();
         if($application===NULL){
             return "<h3>Invalid Link</h3>";
         }
 
-        $application->status=Application::OUTCOMES[$outcome];
+        $application->status=Application::STATUS[$outcome];
         $application->save();
 
-        if($application->status==Application::OUTCOMES[1]){
+        if($application->status==Application::STATUS["approved"]){
             $days_requested=Application::calculate_days($application["start"],$application["end"]);
             $application->user->increaseDaysTaken($days_requested);
             $application->user->save();
         }
 
         Mail::to($application->user->email)->send(new NotifyUser($application));
-        return "<h3>Application { $application->status;} </h3>";
+        return "<h3>Application  was  $application->status </h3>";
 
 
     }
 
-    public function update(Request $request,int $applicationid){
+    /**
+     * Update Application Status
+     * @param Request $request
+     * @param int $applicationid
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public function update(Request $request, int $applicationid){
 
 
         $validator = Validator::make($request->all()
@@ -117,7 +133,7 @@ class ApplicationController extends Controller
         $application->approver_id= $request->user()->id;
         $application->save();
 
-        if($request['status']==Application::OUTCOMES[1]){
+        if($request['status']==Application::STATUS["approved"]){
             $days_requested=Application::calculate_days($application["start"],$application["end"]);
             $application->user->increaseDaysTaken($days_requested);
             $application->user->save();
@@ -129,6 +145,12 @@ class ApplicationController extends Controller
 
 
     }
+
+    /**
+     * Return Current user Applications
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function show(Request $request) {
 
         $applications =  Application::where("user_id",$request->user()->id)->orderByDesc('created_at')->get();
@@ -139,9 +161,15 @@ class ApplicationController extends Controller
         return $applications;
 
     }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function showall(Request $request) {
 
-        $applications =  Application::where("status",Application::STATUS[0])->orderByDesc('created_at')->get();
+        //Look For all
+        $applications =  Application::where("status",Application::STATUS["pending"])->orderByDesc('created_at')->get();
         if($applications==null){
             $response = ["message" => 'no  applications '];
             return response($response, 404);

@@ -16,7 +16,10 @@ class isAdmin
      */
     public function handle(Request $request, Closure $next)
     {
+        //Only proceed if user is admin
         if($request->user()->isAdmin())return $next($request);
+
+        //If not admin end Request
         if($request->user()->isAdmin() == false ){
             $response = ["message" => 'Only admins can do that'];
             return response($response, 403);

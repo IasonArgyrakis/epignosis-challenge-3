@@ -9,7 +9,12 @@ use Illuminate\Support\Facades\Validator;
 
 class UsersController extends Controller
 {
-    public function index(Request $request)
+    /**
+     * Returns all users
+     * @to Should Paginate for more users
+     * @return User[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function index()
     {
 
         return User::all();
@@ -17,6 +22,12 @@ class UsersController extends Controller
     }
 
 
+    /**
+     * Update Specific User
+     * @param Request $request
+     * @param int $user_id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
     public function update(Request $request, int $user_id)
     {
         $validator = Validator::make($request->all()
@@ -47,12 +58,15 @@ class UsersController extends Controller
 
     }
 
-    public function show(Request $request, int $user_id)
+    /**
+     * Get Specific User info
+     * @param int $user_id
+     * @return mixed
+     */
+    public function show(int $user_id)
     {
         $user = User::findorFail($user_id);
         return $user;
-
-
     }
 
 
