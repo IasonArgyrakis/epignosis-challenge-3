@@ -13,11 +13,11 @@ use Illuminate\Support\Facades\Validator;
 
 class ApplicationController extends Controller
 {
-    protected $appService;
 
-    public function __construct()
+
+    public function __construct(ApplicationSerivce $app_service)
     {
-        $this->appService = new ApplicationSerivce();
+        $this->appService = $app_service;
     }
 
     /**
